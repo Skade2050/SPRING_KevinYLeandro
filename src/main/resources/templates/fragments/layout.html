@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="head">
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/estilos.css}" />
+  </head>
+  <body>
+    <nav th:fragment="nav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">Gestor de Aulas</a>
+        <div class="ml-auto">
+          <form th:action="@{/logout}" method="post" class="form-inline">
+            <button type="submit" class="btn btn-outline-light">
+              Cerrar Sesión
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </body>
+</html>

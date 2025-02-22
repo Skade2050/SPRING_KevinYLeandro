@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script>
+      // Aplicar tema oscuro inmediatamente si está guardado
+      if (localStorage.getItem("darkMode") === "enabled") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        document.documentElement.classList.add("dark-mode");
+      }
+    </script>
+    <title>Registro - GestorAulas</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/auth-styles.css}" />
+    <script th:src="@{/js/ModoOscuro.js}"></script>
+  </head>
+  <body>
+    <button class="btn btn-dark theme-switch" onclick="toggleTema()">
+      <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="auth-container">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="auth-card p-4">
+              <div class="auth-header">
+                <h2>Crear Cuenta</h2>
+                <p class="text-muted">Únete a nuestra comunidad</p>
+              </div>
+
+              <form th:action="@{/registro}" method="post">
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-user"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="nombre"
+                      name="nombre"
+                      placeholder="Nombre"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-user"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="apellido"
+                      name="apellido"
+                      placeholder="Apellidos"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-id-card"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="dni"
+                      name="dni"
+                      placeholder="DNI"
+                      pattern="[0-9]{8}[A-Za-z]{1}"
+                      title="Debe introducir un DNI válido (8 números y 1 letra)"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-phone"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="telefono"
+                      name="telefono"
+                      placeholder="Teléfono"
+                      pattern="[0-9]{9}"
+                      title="Debe introducir un número de teléfono válido (9 dígitos)"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-envelope"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      placeholder="Correo electrónico"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="contrasenya"
+                      name="contrasenya"
+                      placeholder="Contraseña"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-user-tag"></i>
+                      </span>
+                    </div>
+                    <select
+                      class="form-control"
+                      id="tipoUsuario"
+                      name="tipoUsuario"
+                      onchange="mostrarCampoClave()"
+                    >
+                      <option value="2">Usuario Normal</option>
+                      <option value="1">Administrador</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div
+                  class="form-group"
+                  id="claveAdminDiv"
+                  style="display: none"
+                >
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-key"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="password"
+                      class="form-control"
+                      name="claveMaestra"
+                      id="claveMaestra"
+                      placeholder="Clave maestra de administrador"
+                    />
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-auth btn-block text-white">
+                  Registrarse
+                </button>
+              </form>
+
+              <div class="text-center mt-4">
+                <a th:href="@{/login}" class="auth-link">
+                  ¿Ya tienes cuenta? Inicia sesión
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function mostrarCampoClave() {
+        var tipoUsuario = document.getElementById("tipoUsuario").value;
+        var claveAdminDiv = document.getElementById("claveAdminDiv");
+
+        if (tipoUsuario === "1") {
+          // Si es administrador
+          claveAdminDiv.style.display = "block";
+        } else {
+          claveAdminDiv.style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>

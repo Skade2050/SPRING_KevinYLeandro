@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script>
+      if (localStorage.getItem("darkMode") === "enabled") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        document.documentElement.classList.add("dark-mode");
+      }
+    </script>
+    <title>Editar Reserva - GestorAulas</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/auth-styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/user-dashboard.css}" />
+    <script th:src="@{/js/ModoOscuro.js}"></script>
+    <style>
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      .form-control {
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ced4da;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      .form-control:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+      }
+      [data-theme="dark"] .form-control {
+        background-color: #2c3034;
+        border-color: #495057;
+        color: #dee2e6;
+      }
+      [data-theme="dark"] .form-control:focus {
+        border-color: #dc3545;
+      }
+      .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #495057;
+      }
+      [data-theme="dark"] .form-label {
+        color: #adb5bd;
+      }
+      .location-info {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+      }
+      [data-theme="dark"] .location-info {
+        background-color: #343a40;
+      }
+      .info-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+      .info-item i {
+        width: 20px;
+        margin-right: 0.5rem;
+        color: #dc3545;
+      }
+      .btn-action {
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Dropdown Menu -->
+    <div class="dropdown position-fixed" style="top: 20px; right: 20px">
+      <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <div
+        class="dropdown-menu dropdown-menu-right"
+        aria-labelledby="dropdownMenuButton"
+      >
+        <a class="dropdown-item" href="/user/dashboard">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <div class="dropdown-divider"></div>
+        <a
+          class="dropdown-item"
+          href="#"
+          onclick="toggleTema(); return false;"
+          id="theme-switch"
+        >
+          <i class="fas fa-moon"></i> Cambiar Tema
+        </a>
+        <div class="dropdown-divider"></div>
+        <a
+          href="#"
+          class="dropdown-item text-danger"
+          onclick="confirmarCerrarSesion(event)"
+        >
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+        <form
+          id="logoutForm"
+          th:action="@{/logout}"
+          method="post"
+          style="display: none"
+        ></form>
+      </div>
+    </div>
+
+    <div class="auth-container">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="auth-card p-4">
+              <div class="auth-header text-center mb-5">
+                <h2>Editar Reserva</h2>
+                <p class="text-muted">
+                  Aula: <span th:text="${reserva.aula.descripcion}"></span>
+                </p>
+                <p class="text-muted">
+                  Edificio:
+                  <span
+                    th:text="${reserva.aula.planta.edificio.descripcion}"
+                  ></span>
+                </p>
+                <p class="text-muted">
+                  Planta:
+                  <span th:text="${reserva.aula.planta.descripcion}"></span>
+                </p>
+                <p class="text-muted">Modifique los datos de la reserva</p>
+              </div>
+
+              <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span th:text="${error}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <form th:action="@{/user/reserva/{id}/actualizar(id=${reserva.idreserva})}" 
+                    th:object="${reserva}" 
+                    method="post">
+                <input type="hidden" th:field="*{aula.idaula}" />
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-calendar"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control datepicker"
+                      th:field="*{fechadesde}"
+                      th:value="${#temporals.format(reserva.fechadesde, 'dd/MM/yyyy')}"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-calendar"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control datepicker"
+                      th:field="*{fechahasta}"
+                      th:value="${#temporals.format(reserva.fechahasta, 'dd/MM/yyyy')}"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-clock"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control timepicker"
+                      th:field="*{horadesde}"
+                      th:value="${#temporals.format(reserva.horadesde, 'HH:mm')}"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-clock"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control timepicker"
+                      th:field="*{horahasta}"
+                      th:value="${#temporals.format(reserva.horahasta, 'HH:mm')}"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-graduation-cap"></i>
+                      </span>
+                    </div>
+                    <select
+                      class="form-control"
+                      th:field="*{curso.idcurso}"
+                      required
+                    >
+                      <option value="">Seleccione un curso</option>
+                      <option
+                        th:each="curso : ${cursos}"
+                        th:if="${curso.activo}"
+                        th:value="${curso.idcurso}"
+                        th:text="${curso.descripcion}"
+                        th:selected="${curso.idcurso == reserva.curso.idcurso}"
+                      ></option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save mr-2"></i>Guardar Cambios
+                  </button>
+                  <a th:href="@{/user/mis-reservas}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left mr-2"></i>Volver
+                  </a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const fechaInicioInput = document.querySelector("[name='fechadesde']");
+        const fechaFinInput = document.querySelector("[name='fechahasta']");
+
+        // Configuración para fecha de inicio
+        const fpInicio = flatpickr(fechaInicioInput, {
+            dateFormat: "d/m/Y",
+            altInput: true,
+            altFormat: "d/m/Y",
+            locale: "es",
+            minDate: "today",
+            defaultDate: /*[[${reserva.fechadesde}]]*/ null,
+            parseDate: (datestr, format) => new Date(datestr),
+            formatDate: (date, format) => {
+                const day = date.getDate().toString().padStart(2, '0');
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            },
+            onChange: function(selectedDates, dateStr, instance) {
+                // Actualizar la fecha mínima del selector de fecha fin
+                if (selectedDates[0]) {
+                    fpFin.set("minDate", selectedDates[0]);
+                }
+            }
+        });
+
+        // Configuración para fecha final
+        const fpFin = flatpickr(fechaFinInput, {
+            dateFormat: "d/m/Y",
+            altInput: true,
+            altFormat: "d/m/Y",
+            locale: "es",
+            minDate: "today",
+            defaultDate: /*[[${reserva.fechahasta}]]*/ null,
+            parseDate: (datestr, format) => new Date(datestr),
+            formatDate: (date, format) => {
+                const day = date.getDate().toString().padStart(2, '0');
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            }
+        });
+
+        // Configuración para los selectores de hora
+        flatpickr(".timepicker", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true,
+            minuteIncrement: 1,
+            defaultMinute: 0
+        });
+
+        // Validación del formulario
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            const fechaDesde = document.querySelector('[name="fechadesde"]').value;
+            const fechaHasta = document.querySelector('[name="fechahasta"]').value;
+            const horaDesde = document.querySelector('[name="horadesde"]').value;
+            const horaHasta = document.querySelector('[name="horahasta"]').value;
+
+            if (fechaDesde > fechaHasta) {
+                e.preventDefault();
+                alert('La fecha de fin no puede ser anterior a la fecha de inicio');
+            } else if (fechaDesde === fechaHasta && horaDesde >= horaHasta) {
+                e.preventDefault();
+                alert('La hora de fin debe ser posterior a la hora de inicio');
+            }
+        });
+    });
+    </script>
+  </body>
+</html>

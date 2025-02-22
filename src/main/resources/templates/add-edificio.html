@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Agregar Edificio - GestorAulas</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/auth-styles.css}" />
+    <script th:src="@{/js/ModoOscuro.js}"></script>
+    <style>
+      [data-theme="dark"] .dropdown-menu {
+        background-color: #343a40;
+      }
+
+      [data-theme="dark"] .dropdown-item {
+        color: #ffffff;
+      }
+
+      [data-theme="dark"] .dropdown-item:hover {
+        background-color: #495057;
+        color: #ffffff;
+      }
+
+      [data-theme="dark"] .dropdown-divider {
+        border-top: 1px solid #495057;
+      }
+
+      [data-theme="dark"] .btn-secondary {
+        background-color: #343a40;
+        border-color: #495057;
+      }
+
+      [data-theme="dark"] .btn-secondary:hover {
+        background-color: #495057;
+        border-color: #6c757d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dropdown position-fixed" style="top: 20px; right: 20px">
+      <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <div
+        class="dropdown-menu dropdown-menu-right"
+        aria-labelledby="dropdownMenuButton"
+      >
+        <a class="dropdown-item" href="/">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <div class="dropdown-divider"></div>
+        <a
+          class="dropdown-item"
+          href="#"
+          onclick="toggleTema(); return false;"
+          id="theme-switch"
+        >
+          <i class="fas fa-moon"></i> Cambiar Tema
+        </a>
+        <div class="dropdown-divider"></div>
+        <a
+          href="#"
+          class="dropdown-item text-danger"
+          onclick="confirmarCerrarSesion(event)"
+        >
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+        <form
+          id="logoutForm"
+          th:action="@{/logout}"
+          method="post"
+          style="display: none"
+        ></form>
+      </div>
+    </div>
+
+    <div class="auth-container">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="auth-card p-4">
+              <div class="auth-header">
+                <h2
+                  th:text="${esNuevo ? 'Agregar Edificio' : 'Modificar Edificio'}"
+                >
+                  Gestión de Edificio
+                </h2>
+                <p class="text-muted">Ingrese los datos del edificio</p>
+              </div>
+
+              <form
+                th:action="${esNuevo ? '/edificios/save' : '/edificios/update/' + edificio.idedificio}"
+                method="post"
+                th:object="${edificio}"
+              >
+                <!-- Si es edición, incluimos el ID oculto -->
+                <input
+                  type="hidden"
+                  th:field="*{idedificio}"
+                  th:if="${!esNuevo}"
+                />
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-building"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="descripcion"
+                      th:field="${edificio.descripcion}"
+                      placeholder="Descripción"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-door-open"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="naulas"
+                      th:field="${edificio.naulas}"
+                      placeholder="Número de Aulas"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-door-closed"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="npuertasacceso"
+                      th:field="${edificio.npuertasacceso}"
+                      placeholder="Número de Puertas de Acceso"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-map-marker-alt"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="ubicacion"
+                      th:field="${edificio.ubicacion}"
+                      placeholder="Ubicación"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-toggle-on"></i>
+                      </span>
+                    </div>
+                    <select
+                      class="form-control"
+                      id="activo"
+                      th:field="${edificio.activo}"
+                    >
+                      <option value="1">Activo</option>
+                      <option value="0">Inactivo</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Guardar
+                  </button>
+                  <a href="/edificios" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                  </a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function confirmarCerrarSesion(event) {
+        event.preventDefault();
+        if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+          document.getElementById("logoutForm").submit();
+        }
+      }
+    </script>
+  </body>
+</html>

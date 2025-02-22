@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script>
+      // Aplicar tema oscuro inmediatamente si está guardado
+      if (localStorage.getItem("darkMode") === "enabled") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        document.documentElement.classList.add("dark-mode");
+      }
+    </script>
+    <title
+      th:text="${edificio.idedificio == null ? 'Nuevo Edificio' : 'Editar Edificio'} + ' - GestorAulas'"
+    ></title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/auth-styles.css}" />
+    <script th:src="@{/js/darkMode.js}" defer></script>
+  </head>
+  <body>
+    <button class="btn btn-dark theme-switch">
+      <i class="fas fa-moon"></i>
+    </button>
+
+    <form th:action="@{/logout}" method="post" class="logout-btn">
+      <button type="submit" class="btn btn-danger">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+      </button>
+    </form>
+
+    <a href="/" class="home-btn btn btn-outline-danger">
+      <i class="fas fa-home"></i> Inicio
+    </a>
+
+    <div class="auth-container">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="auth-card p-4">
+              <div class="auth-header">
+                <h2
+                  th:text="${edificio.idedificio == null ? 'Nuevo Edificio' : 'Editar Edificio'}"
+                ></h2>
+                <p class="text-muted">Completa los datos del edificio</p>
+              </div>
+
+              <form
+                th:action="@{/edificios/guardar}"
+                th:object="${edificio}"
+                method="post"
+              >
+                <input type="hidden" th:field="*{idedificio}" />
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-building"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      th:field="*{descripcion}"
+                      placeholder="Descripción"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-door-open"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="number"
+                      class="form-control"
+                      th:field="*{naulas}"
+                      placeholder="Número de aulas"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-door-closed"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="number"
+                      class="form-control"
+                      th:field="*{npuertasacceso}"
+                      placeholder="Número de puertas de acceso"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-map-marker-alt"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      th:field="*{ubicacion}"
+                      placeholder="Ubicación"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-toggle-on"></i>
+                      </span>
+                    </div>
+                    <select class="form-control" th:field="*{activo}">
+                      <option value="true">Activo</option>
+                      <option value="false">Inactivo</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group text-center mt-4">
+                  <button type="submit" class="btn btn-danger btn-block">
+                    <i class="fas fa-save"></i> Guardar
+                  </button>
+                  <a
+                    href="/edificios"
+                    class="btn btn-outline-secondary btn-block mt-2"
+                  >
+                    <i class="fas fa-times"></i> Cancelar
+                  </a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,161 @@
+.edificio-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.edificio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.estado-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  color: #dc3545; /* Cambiado a rojo */
+  margin-bottom: 1rem;
+}
+
+[data-theme="dark"] .edificio-card {
+  background-color: #2c3034;
+  border-color: #495057;
+}
+
+[data-theme="dark"] .card-icon {
+  color: #dc3545; /* Mantenemos el rojo en modo oscuro */
+}
+
+[data-theme="dark"] .card-text {
+  color: #dee2e6;
+}
+
+.info-row {
+  margin-bottom: 0.5rem;
+}
+
+.info-label {
+  font-weight: 500;
+  color: #6c757d;
+}
+
+[data-theme="dark"] .info-label {
+  color: #adb5bd;
+}
+
+/* Estilos para los iconos de información */
+.info-label i {
+  color: #dc3545; /* Iconos de información en rojo */
+}
+
+/* Estilos para los botones */
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+[data-theme="dark"] .btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+[data-theme="dark"] .btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Estilos para el menú desplegable */
+.dropdown.position-fixed {
+  z-index: 1050; /* Valor mayor que el contenedor principal */
+}
+
+.dropdown-menu {
+  z-index: 1051; /* Un valor más alto que el dropdown para asegurar que está por encima */
+}
+
+/* Aseguramos que el contenedor principal tiene un z-index menor */
+.auth-container {
+  z-index: 1; /* Un valor menor que el dropdown */
+  position: relative;
+}
+
+/* Estilos para el menú desplegable en modo oscuro */
+[data-theme="dark"] .dropdown-menu {
+  background-color: #343a40;
+}
+
+[data-theme="dark"] .dropdown-item {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+  background-color: #495057;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .dropdown-divider {
+  border-top: 1px solid #495057;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background-color: #343a40;
+  border-color: #495057;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background-color: #495057;
+  border-color: #6c757d;
+}
+
+/* Estilos específicos para las plantas */
+.card-icon.fa-layer-group {
+  color: #dc3545;
+  font-size: 3rem;
+}
+
+[data-theme="dark"] .auth-header h2 span {
+  color: #dc3545;
+}
+
+.badge-success {
+  background-color: #28a745;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+}
+
+[data-theme="dark"] .badge-success {
+  background-color: #28a745;
+}
+
+[data-theme="dark"] .badge-danger {
+  background-color: #dc3545;
+}
+
+/* Estilos específicos para las aulas */
+.card-icon.fa-chalkboard {
+  color: #dc3545;
+  font-size: 3rem;
+}
+
+.aula-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.aula-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .text-muted {
+  color: #adb5bd !important;
+}

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script>
+      if (localStorage.getItem("darkMode") === "enabled") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        document.documentElement.classList.add("dark-mode");
+      }
+    </script>
+    <title>Plantas del Edificio - GestorAulas</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/auth-styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/user-dashboard.css}" />
+    <script th:src="@{/js/ModoOscuro.js}"></script>
+  </head>
+  <body>
+    <!-- Menú desplegable -->
+    <div class="dropdown position-fixed" style="top: 20px; right: 20px">
+      <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="/user/dashboard">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <div class="dropdown-divider"></div>
+        <a
+          class="dropdown-item"
+          href="#"
+          onclick="toggleTema(); return false;"
+          id="theme-switch"
+        >
+          <i class="fas fa-moon"></i> Cambiar Tema
+        </a>
+        <div class="dropdown-divider"></div>
+        <a
+          href="#"
+          class="dropdown-item text-danger"
+          onclick="confirmarCerrarSesion(event)"
+        >
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+        <form
+          id="logoutForm"
+          th:action="@{/logout}"
+          method="post"
+          style="display: none"
+        ></form>
+      </div>
+    </div>
+
+    <div class="auth-container">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="auth-card p-4">
+              <div class="auth-header text-center mb-5">
+                <h2>
+                  Plantas del Edificio
+                  <span th:text="${edificio.descripcion}"></span>
+                </h2>
+                <p class="text-muted">
+                  Selecciona una planta para ver más detalles
+                </p>
+              </div>
+
+              <div class="row">
+                <div
+                  th:each="planta : ${plantas}"
+                  class="col-md-6 col-lg-4 mb-4"
+                >
+                  <div class="card edificio-card">
+                    <div class="card-body">
+                      <span
+                        th:if="${planta.activo}"
+                        class="badge badge-success estado-badge"
+                      >
+                        Activa
+                      </span>
+                      <span
+                        th:unless="${planta.activo}"
+                        class="badge badge-danger estado-badge"
+                      >
+                        Inactiva
+                      </span>
+
+                      <div class="text-center mb-4">
+                        <i class="fas fa-layer-group card-icon"></i>
+                      </div>
+
+                      <h5
+                        class="card-title text-center"
+                        th:text="${planta.descripcion}"
+                      >
+                        Planta
+                      </h5>
+
+                      <div class="info-row">
+                        <span class="info-label">
+                          <i class="fas fa-chalkboard-teacher mr-2"></i>Aulas
+                          Docentes:
+                        </span>
+                        <span th:text="${planta.naulasdocentes}"></span>
+                      </div>
+
+                      <div class="info-row">
+                        <span class="info-label">
+                          <i class="fas fa-door-open mr-2"></i>Aulas Auxiliares:
+                        </span>
+                        <span th:text="${planta.naulaauxiliares}"></span>
+                      </div>
+
+                      <div class="text-center mt-3">
+                        <a
+                          th:if="${planta.activo}"
+                          th:href="@{/user/planta/{id}/aulas(id=${planta.idplanta})}"
+                          class="btn btn-outline-danger btn-block"
+                        >
+                          <i class="fas fa-chalkboard mr-2"></i>Ver Aulas
+                        </a>
+                        <button
+                          th:unless="${planta.activo}"
+                          class="btn btn-outline-secondary btn-block"
+                          disabled
+                        >
+                          <i class="fas fa-lock mr-2"></i>No Disponible
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function confirmarCerrarSesion(event) {
+        event.preventDefault();
+        if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
+          document.getElementById("logoutForm").submit();
+        }
+      }
+    </script>
+  </body>
+</html>

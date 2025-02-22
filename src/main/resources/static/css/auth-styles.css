@@ -1,0 +1,443 @@
+:root {
+  --primary-color: #dc3545;
+  --primary-hover: #c82333;
+  --bg-light: #ffffff;
+  --bg-dark: #212529;
+  --text-light: #212529;
+  --text-dark: #ffffff;
+}
+
+/* Eliminar la sección de prevenir flash y reemplazarla con esto */
+html {
+  background-color: var(--bg-light);
+  color: var(--text-light);
+}
+
+/* Aplicar modo oscuro inmediatamente si está guardado */
+html[data-theme="dark"] {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+html[data-theme="dark"] body {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+/* Resto de estilos para modo oscuro */
+.dark-mode {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+/* Eliminar la visibilidad hidden inicial */
+body {
+  background-color: inherit;
+  color: inherit;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+body.dark-mode {
+  color: var(--text-dark);
+}
+
+.auth-container {
+  min-height: 100vh;
+  padding: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.col-md-10 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.table-responsive {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.dark-mode .auth-card {
+  background: rgba(33, 37, 41, 0.95);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+  margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+  color: #6c757d;
+}
+
+.form-control {
+  border-radius: 8px;
+  padding: 12px;
+  border: 2px solid #ced4da;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .form-control {
+  background-color: #2b3035;
+  border-color: #495057;
+  color: #fff;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.btn-auth {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-auth:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.theme-switch {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+
+.auth-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.auth-link:hover {
+  color: var(--primary-hover);
+  text-decoration: none;
+}
+
+.input-group-text {
+  background-color: transparent;
+  border: 2px solid #ced4da;
+  border-right: none;
+}
+
+.dark-mode .input-group-text {
+  background-color: #2b3035;
+  border-color: #495057;
+  color: #fff;
+}
+
+.logo-container {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.logo-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+select.form-control {
+  height: 48px;
+  padding: 0 12px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+.dark-mode select.form-control {
+  background-color: #2b3035;
+  border-color: #495057;
+  color: #fff;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+select.form-control option {
+  padding: 12px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.dark-mode select.form-control option {
+  background-color: #2b3035;
+  color: #fff;
+}
+
+#claveAdminDiv {
+  transition: all 0.3s ease;
+}
+
+.dark-mode #claveAdminDiv input {
+  background-color: #2b3035;
+  border-color: #495057;
+  color: #fff;
+}
+
+.logout-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.admin-card {
+  text-decoration: none !important;
+  display: block;
+  height: 100%;
+}
+
+.admin-card .card {
+  border: 2px solid #ced4da;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.dark-mode .admin-card .card {
+  background: rgba(33, 37, 41, 0.95);
+  border-color: #495057;
+  color: #fff;
+}
+
+.admin-card:hover .card {
+  transform: translateY(-5px);
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 32px rgba(220, 53, 69, 0.2);
+}
+
+.dark-mode .admin-card:hover .card {
+  box-shadow: 0 8px 32px rgba(220, 53, 69, 0.3);
+}
+
+.admin-card .fa-3x {
+  color: var(--primary-color);
+}
+
+.admin-card h4 {
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.dark-mode .admin-card h4 {
+  color: var(--text-dark);
+}
+
+.home-btn {
+  position: fixed;
+  top: 20px;
+  left: 140px;
+  z-index: 1000;
+}
+
+.custom-table {
+  width: 100%;
+  margin: 0 auto;
+  table-layout: fixed;
+}
+
+.dark-mode .custom-table {
+  color: var(--text-dark);
+}
+
+.custom-table th {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.custom-table td {
+  text-align: center;
+  font-size: 0.85rem;
+  vertical-align: middle;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 0.75rem;
+  text-align: center;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  word-wrap: break-word;
+  max-width: none;
+}
+
+/* Ajustar anchos de columnas proporcionalmente */
+.custom-table th:nth-child(1),
+.custom-table td:nth-child(1) {
+  width: 5%;
+} /* ID */
+
+.custom-table th:nth-child(2),
+.custom-table td:nth-child(2) {
+  width: 10%;
+} /* NOMBRE */
+
+.custom-table th:nth-child(3),
+.custom-table td:nth-child(3) {
+  width: 15%;
+} /* DESCRIPCIÓN */
+
+.custom-table th:nth-child(4),
+.custom-table td:nth-child(4) {
+  width: 7%;
+} /* CAPACIDAD */
+
+.custom-table th:nth-child(5),
+.custom-table td:nth-child(5) {
+  width: 10%;
+} /* PLANTA */
+
+.custom-table th:nth-child(6),
+.custom-table td:nth-child(6) {
+  width: 10%;
+} /* TIPO */
+
+.custom-table th:nth-child(7),
+.custom-table td:nth-child(7) {
+  width: 18%;
+} /* EQUIPAMIENTO */
+
+.custom-table th:nth-child(8),
+.custom-table td:nth-child(8) {
+  width: 10%;
+} /* ESTADO */
+
+.custom-table th:nth-child(9),
+.custom-table td:nth-child(9) {
+  width: 15%;
+} /* ACCIONES */
+
+.custom-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.dark-mode .custom-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.badge {
+  padding: 0.5em 1em;
+  font-size: 85%;
+  font-weight: 500;
+  border-radius: 30px;
+}
+
+.badge-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.badge-danger {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-group .btn {
+  padding: 0.375rem 0.75rem;
+}
+
+.btn-outline-primary {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.dark-mode .btn-outline-primary {
+  color: #4dabf7;
+  border-color: #4dabf7;
+}
+
+.dark-mode .btn-outline-primary:hover {
+  color: #212529;
+  background-color: #4dabf7;
+  border-color: #4dabf7;
+}
+
+.info-container {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.dark-mode .info-container {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.info-row {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .info-row {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.dark-mode .info-label {
+  color: var(--text-dark);
+}
+
+.info-value {
+  color: var(--text-light);
+}
+
+.dark-mode .info-value {
+  color: var(--text-dark);
+}

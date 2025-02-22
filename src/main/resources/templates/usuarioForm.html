@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script>
+        // Aplicar tema oscuro inmediatamente si está guardado
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.documentElement.setAttribute("data-theme", "dark");
+            document.documentElement.classList.add("dark-mode");
+        }
+    </script>
+    <title th:text="${usuario.idusuario == null ? 'Nuevo Usuario' : 'Editar Usuario'} + ' - GestorAulas'"></title>
+    <!-- Resto del head... -->
+  </head>
+  <body>
+    <!-- Resto del contenido del archivo... -->
+  </body>
+</html> 

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script>
+      if (localStorage.getItem("darkMode") === "enabled") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        document.documentElement.classList.add("dark-mode");
+      }
+    </script>
+    <title>Aulas de la Planta - GestorAulas</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/auth-styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/user-dashboard.css}" />
+    <script th:src="@{/js/ModoOscuro.js}"></script>
+  </head>
+  <body>
+    <!-- Menú desplegable -->
+    <div class="dropdown position-fixed" style="top: 20px; right: 20px">
+      <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="/user/dashboard">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <a
+          class="dropdown-item"
+          th:href="@{/user/edificio/{id}/plantas(id=${planta.edificio.idedificio})}"
+        >
+          <i class="fas fa-arrow-left"></i> Volver a Plantas
+        </a>
+        <div class="dropdown-divider"></div>
+        <a
+          class="dropdown-item"
+          href="#"
+          onclick="toggleTema(); return false;"
+          id="theme-switch"
+        >
+          <i class="fas fa-moon"></i> Cambiar Tema
+        </a>
+        <div class="dropdown-divider"></div>
+        <a
+          href="#"
+          class="dropdown-item text-danger"
+          onclick="confirmarCerrarSesion(event)"
+        >
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+        <form
+          id="logoutForm"
+          th:action="@{/logout}"
+          method="post"
+          style="display: none"
+        ></form>
+      </div>
+    </div>
+
+    <div class="auth-container">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="auth-card p-4">
+              <div class="auth-header text-center mb-5">
+                <h2>
+                  Aulas de la Planta
+                  <span th:text="${planta.descripcion}"></span>
+                </h2>
+                <p class="text-muted">
+                  Edificio:
+                  <span th:text="${planta.edificio.descripcion}"></span>
+                </p>
+              </div>
+
+              <!-- Añadir el formulario de búsqueda -->
+              <div class="search-form mb-4">
+                <h4 class="mb-4">Buscar Aulas</h4>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="nombreAula">Nombre del aula:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="fas fa-search"></i>
+                        </span>
+                      </div>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="nombreAula"
+                        placeholder="Ingrese nombre del aula"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="capacidadMinima">Capacidad mínima:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="fas fa-users"></i>
+                        </span>
+                      </div>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="capacidadMinima"
+                        placeholder="Capacidad mínima requerida"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-12">
+                    <label for="tipoAula">Tipo de aula:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="fas fa-chalkboard"></i>
+                        </span>
+                      </div>
+                      <select class="form-control" id="tipoAula">
+                        <option value="">Todos los tipos</option>
+                        <option
+                          th:each="tipo : ${tiposAula}"
+                          th:value="${tipo.idtipo}"
+                          th:text="${tipo.nombretipo}"
+                        ></option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12">
+                    <button class="btn btn-primary mr-2">
+                      <i class="fas fa-search mr-2"></i>Buscar
+                    </button>
+                    <button class="btn btn-secondary" onclick="limpiarCampos()">
+                      <i class="fas fa-eraser mr-2"></i>Limpiar
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div th:each="aula : ${aulas}" class="col-md-6 col-lg-4 mb-4">
+                  <div class="card edificio-card">
+                    <div class="card-body">
+                      <span
+                        th:if="${aula.activo}"
+                        class="badge badge-success estado-badge"
+                      >
+                        Activa
+                      </span>
+                      <span
+                        th:unless="${aula.activo}"
+                        class="badge badge-danger estado-badge"
+                      >
+                        Inactiva
+                      </span>
+
+                      <div class="text-center mb-4">
+                        <i class="fas fa-chalkboard card-icon"></i>
+                      </div>
+
+                      <h5
+                        class="card-title text-center"
+                        th:text="${aula.descripcion}"
+                      >
+                        Aula
+                      </h5>
+
+                      <div class="info-row">
+                        <span class="info-label">
+                          <i class="fas fa-users mr-2"></i>Capacidad:
+                        </span>
+                        <span th:text="${aula.capacidad}"></span>
+                      </div>
+
+                      <div class="info-row">
+                        <span class="info-label">
+                          <i class="fas fa-tag mr-2"></i>Tipo:
+                        </span>
+                        <span th:text="${aula.tipoAula.nombretipo}"></span>
+                      </div>
+
+                      <div class="text-center mt-3">
+                        <a
+                          th:if="${aula.activo}"
+                          th:href="@{/user/aula/{id}/reservar(id=${aula.idaula})}"
+                          class="btn btn-outline-danger btn-block"
+                        >
+                          <i class="fas fa-calendar-plus mr-2"></i>Reservar Aula
+                        </a>
+                        <button
+                          th:unless="${aula.activo}"
+                          class="btn btn-outline-secondary btn-block"
+                          disabled
+                        >
+                          <i class="fas fa-lock mr-2"></i>No Disponible
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function confirmarCerrarSesion(event) {
+        event.preventDefault();
+        if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
+          document.getElementById("logoutForm").submit();
+        }
+      }
+    </script>
+
+    <!-- Agregar estilos específicos -->
+    <style>
+      .search-form {
+        background-color: rgba(0, 0, 0, 0.03);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+      }
+
+      [data-theme="dark"] .search-form {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      .search-form label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #495057;
+      }
+
+      [data-theme="dark"] .search-form label {
+        color: #adb5bd;
+      }
+
+      .input-group-text {
+        background-color: #f8f9fa;
+        border-right: none;
+      }
+
+      [data-theme="dark"] .input-group-text {
+        background-color: #343a40;
+        border-color: #495057;
+        color: #adb5bd;
+      }
+
+      .form-control {
+        border-left: none;
+      }
+
+      [data-theme="dark"] .form-control {
+        background-color: #343a40;
+        border-color: #495057;
+        color: #fff;
+      }
+
+      [data-theme="dark"] .form-control::placeholder {
+        color: #6c757d;
+      }
+    </style>
+
+    <!-- Justo antes del cierre del body, después de los otros scripts -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const btnBuscar = document.querySelector(".btn-primary");
+        const plantaId = window.location.pathname.split("/")[3]; // Obtiene el ID de la planta de la URL
+
+        btnBuscar.addEventListener("click", buscarAulas);
+
+        function buscarAulas() {
+          const nombreAula = document.getElementById("nombreAula").value;
+          const capacidadMinima = document.getElementById("capacidadMinima").value;
+          const tipoAula = document.getElementById("tipoAula").value;
+
+          const params = new URLSearchParams({
+            nombreAula: nombreAula,
+            capacidadMinima: capacidadMinima,
+            tipoAula: tipoAula,
+          });
+
+          // Cambiar a la misma ventana en lugar de abrir una nueva
+          window.location.href = `/user/planta/${plantaId}/aulas/filtradas?${params}`;
+        }
+
+        function actualizarListaAulas(aulas) {
+          const contenedorAulas = document.querySelector(".row:last-child");
+          contenedorAulas.innerHTML = "";
+
+          aulas.forEach((aula) => {
+            const html = `
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card edificio-card">
+                            <div class="card-body">
+                                <span class="badge ${
+                                  aula.activo ? "badge-success" : "badge-danger"
+                                } estado-badge">
+                                    ${aula.activo ? "Activa" : "Inactiva"}
+                                </span>
+                                
+                                <div class="text-center mb-4">
+                                    <i class="fas fa-chalkboard card-icon"></i>
+                                </div>
+                                
+                                <h5 class="card-title text-center">${
+                                  aula.descripcion
+                                }</h5>
+                                
+                                <div class="info-row">
+                                    <span class="info-label">
+                                        <i class="fas fa-users mr-2"></i>Capacidad:
+                                    </span>
+                                    <span>${aula.capacidad}</span>
+                                </div>
+                                
+                                <div class="info-row">
+                                    <span class="info-label">
+                                        <i class="fas fa-tag mr-2"></i>Tipo:
+                                    </span>
+                                    <span>${aula.tipoAula.nombretipo}</span>
+                                </div>
+                                
+                                <div class="text-center mt-3">
+                                    ${
+                                      aula.activo
+                                        ? `<a href="/user/aula/${aula.idaula}/reservar" 
+                                            class="btn btn-outline-danger btn-block">
+                                            <i class="fas fa-calendar-plus mr-2"></i>Reservar Aula
+                                        </a>`
+                                        : `<button class="btn btn-outline-secondary btn-block" disabled>
+                                            <i class="fas fa-lock mr-2"></i>No Disponible
+                                        </button>`
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            contenedorAulas.insertAdjacentHTML("beforeend", html);
+          });
+        }
+
+        // Añadir la función para limpiar campos
+        window.limpiarCampos = function() {
+          document.getElementById("nombreAula").value = "";
+          document.getElementById("capacidadMinima").value = "";
+          document.getElementById("tipoAula").value = "";
+        }
+      });
+    </script>
+  </body>
+</html>

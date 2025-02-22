@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script>
+      // Aplicar tema oscuro inmediatamente si está guardado
+      if (localStorage.getItem("darkMode") === "enabled") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        document.documentElement.classList.add("dark-mode");
+      }
+    </script>
+    <title>Login - GestorAulas</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/auth-styles.css}" />
+    <script th:src="@{/js/ModoOscuro.js}"></script>
+  </head>
+  <body>
+    <button class="btn btn-dark theme-switch" onclick="toggleTema()">
+      <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="auth-container">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-5">
+            <div class="auth-card p-4">
+              <div class="auth-header">
+                <h2>Iniciar Sesión</h2>
+                <p class="text-muted">Bienvenido de nuevo</p>
+              </div>
+
+              <div
+                th:if="${param.error}"
+                class="alert alert-danger"
+                role="alert"
+              >
+                <span th:if="${param.error[0] == 'inactive'}">
+                  Tu cuenta está inactiva. Por favor, contacta con un
+                  administrador.
+                </span>
+                <span th:if="${param.error[0] == 'notfound'}">
+                  El usuario no existe en el sistema.
+                </span>
+                <span th:if="${param.error[0] == 'badcredentials'}">
+                  La contraseña es incorrecta.
+                </span>
+                <span th:if="${param.error[0] == 'true'}">
+                  Error al iniciar sesión. Por favor, inténtalo de nuevo.
+                </span>
+              </div>
+
+              <div th:if="${param.message}" class="alert alert-info">
+                <p th:text="${param.message}"></p>
+              </div>
+
+              <form th:action="@{/login}" method="post">
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-envelope"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      placeholder="Correo electrónico"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="contrasenya"
+                      name="contrasenya"
+                      placeholder="Contraseña"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-auth btn-block text-white">
+                  Iniciar Sesión
+                </button>
+              </form>
+
+              <div class="text-center mt-4">
+                <a th:href="@{/registro}" class="auth-link">
+                  ¿No tienes cuenta? Regístrate
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

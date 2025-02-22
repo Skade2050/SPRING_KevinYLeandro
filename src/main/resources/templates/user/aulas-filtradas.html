@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script>
+      if (localStorage.getItem("darkMode") === "enabled") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        document.documentElement.classList.add("dark-mode");
+      }
+    </script>
+    <title>Resultados de Búsqueda - GestorAulas</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/auth-styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/user-dashboard.css}" />
+    <script th:src="@{/js/ModoOscuro.js}"></script>
+  </head>
+  <body>
+    <!-- Menú desplegable -->
+    <div class="dropdown position-fixed" style="top: 20px; right: 20px">
+      <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <div
+        class="dropdown-menu dropdown-menu-right"
+        aria-labelledby="dropdownMenuButton"
+      >
+        <a class="dropdown-item" href="/user/dashboard">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <a
+          class="dropdown-item"
+          th:href="@{/user/edificio/{id}/plantas(id=${planta.edificio.idedificio})}"
+        >
+          <i class="fas fa-arrow-left"></i> Volver a Plantas
+        </a>
+        <div class="dropdown-divider"></div>
+        <a
+          class="dropdown-item"
+          href="#"
+          onclick="toggleTema(); return false;"
+          id="theme-switch"
+        >
+          <i class="fas fa-moon"></i> Cambiar Tema
+        </a>
+        <div class="dropdown-divider"></div>
+        <a
+          href="#"
+          class="dropdown-item text-danger"
+          onclick="confirmarCerrarSesion(event)"
+        >
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+        <form
+          id="logoutForm"
+          th:action="@{/logout}"
+          method="post"
+          style="display: none"
+        ></form>
+      </div>
+    </div>
+
+    <div class="auth-container">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="auth-card p-4">
+              <div class="auth-header text-center mb-5">
+                <h2>Resultados de Búsqueda</h2>
+                <p class="text-muted">
+                  Planta: <span th:text="${planta.descripcion}"></span><br />
+                  Edificio:
+                  <span th:text="${planta.edificio.descripcion}"></span>
+                </p>
+              </div>
+
+              <div class="container">
+                <!-- Mensaje cuando no hay aulas -->
+                <div th:if="${#lists.isEmpty(aulas)}" class="text-center mb-4">
+                  <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    No se encontraron aulas que coincidan con los filtros de búsqueda
+                  </div>
+                </div>
+
+                <div class="row">
+                  <!-- Aula card -->
+                  <div th:unless="${#lists.isEmpty(aulas)}" th:each="aula : ${aulas}" class="col-md-6 col-lg-4 mb-4">
+                    <div class="card edificio-card h-100">
+                      <div class="card-body">
+                        <div class="estado-badge">
+                          <span
+                            th:if="${aula.activo}"
+                            class="badge badge-success"
+                            >Activo</span
+                          >
+                          <span
+                            th:unless="${aula.activo}"
+                            class="badge badge-danger"
+                            >Inactivo</span
+                          >
+                        </div>
+
+                        <h5 class="card-title text-center mb-4">
+                          <i class="fas fa-chalkboard card-icon"></i>
+                          <br />
+                          <span th:text="${aula.descripcion}"></span>
+                        </h5>
+
+                        <div class="info-row">
+                          <span class="info-label">
+                            <i class="fas fa-users mr-2"></i>Capacidad:
+                          </span>
+                          <span th:text="${aula.capacidad}"></span>
+                        </div>
+
+                        <div class="info-row">
+                          <span class="info-label">
+                            <i class="fas fa-tag mr-2"></i>Tipo:
+                          </span>
+                          <span th:text="${aula.tipoAula.nombretipo}"></span>
+                        </div>
+
+                        <div class="text-center mt-3">
+                          <a
+                            th:if="${aula.activo}"
+                            th:href="@{/user/aula/{id}/reservar(id=${aula.idaula})}"
+                            class="btn btn-outline-danger btn-block"
+                          >
+                            <i class="fas fa-calendar-plus mr-2"></i>Reservar
+                            Aula
+                          </a>
+                          <button
+                            th:unless="${aula.activo}"
+                            class="btn btn-outline-secondary btn-block"
+                            disabled
+                          >
+                            <i class="fas fa-lock mr-2"></i>No Disponible
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Botón de volver al final de la página -->
+                <div class="row mt-4 mb-4">
+                  <div class="col-12">
+                    <a
+                      th:href="@{/user/planta/{id}/aulas(id=${planta.idplanta})}"
+                      class="btn btn-secondary float-left"
+                    >
+                      <i class="fas fa-arrow-left mr-2"></i>Volver
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mismos scripts que en aulas.html -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function confirmarCerrarSesion(event) {
+        event.preventDefault();
+        if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
+          document.getElementById("logoutForm").submit();
+        }
+      }
+    </script>
+  </body>
+</html>
