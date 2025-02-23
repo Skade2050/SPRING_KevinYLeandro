@@ -52,6 +52,7 @@ Gestor de Aulas es una aplicación web desarrollada con Spring Boot que permite 
 
 ### 2. Configuración de Base de Datos
 1. Abrir MySQL Command Line Client:
+Crear la base de datos en MySQL, debe llamarse gestoraulas, una vez creada la BBDD, ejecutar la siguiente query:
 ```sql
 USE gestoraulas;
 
