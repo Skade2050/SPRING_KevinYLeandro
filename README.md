@@ -53,7 +53,6 @@ Gestor de Aulas es una aplicación web desarrollada con Spring Boot que permite 
 ### 2. Configuración de Base de Datos
 1. Abrir MySQL Command Line Client:
 ```sql
-CREATE DATABASE gestoraulas;
 USE gestoraulas;
 
 -- Crear el tipo de usuario Admin (REQUERIDO)
